@@ -2,7 +2,7 @@
 
 namespace App\Services\Payment;
 
-use LiqPay\LiqPay;
+use LiqPay;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Core\SandboxEnvironment;
 

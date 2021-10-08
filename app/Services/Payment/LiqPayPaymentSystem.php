@@ -3,7 +3,7 @@
 namespace App\Services\Payment;
 
 use App\Models\Order;
-use LiqPay\LiqPay;
+use LiqPay;
 
 class LiqPayPaymentSystem implements PaymentSystem
 {

@@ -28,7 +28,8 @@ class OrderController extends Controller
     {
         $order = new Order();
 
-        $this->paymentService->createCheckout($order);
+        $paymentSystem = $this->paymentService->getPaymentSystem();
+        $paymentSystem->createCheckout($order);
     }
 
     /**
