@@ -2,13 +2,11 @@
 
 namespace App\Services\Payment;
 
-use LiqPay;
-use PayPalCheckoutSdk\Core\PayPalHttpClient;
-use PayPalCheckoutSdk\Core\SandboxEnvironment;
+use App\Interfaces\PaymentSystemInterface;
 
 class PaymentSystemService
 {
-    private PaymentSystem $paymentSystem;
+    private PaymentSystemInterface $paymentSystem;
 
     /**
      * For chose payment system type
@@ -17,16 +15,16 @@ class PaymentSystemService
      */
     public function __construct()
     {
-        // Get payment type from config
+        // Get payment type from config or request
         $paymentSystemType = 'paypal';
 
         switch ($paymentSystemType) {
             case 'paypal':
-                $this->paymentSystem = $this->initPayPalSystem();
+                $this->paymentSystem = $this->app->make(PayPalPaymentSystem::class);
                 break;
 
             case 'liqpay':
-                $this->paymentSystem = $this->initLiqPaySystem();
+                $this->paymentSystem = $this->app->make(LiqPayPaymentSystem::class);
                 break;
         }
     }
@@ -34,45 +32,10 @@ class PaymentSystemService
     /**
      * Getter
      *
-     * @return PaymentSystem
+     * @return PaymentSystemInterface
      */
-    public function getPaymentSystem(): PaymentSystem
+    public function getPaymentSystem(): PaymentSystemInterface
     {
         return $this->paymentSystem;
-    }
-
-    /**
-     * Initialize PayPal.
-     * https://github.com/paypal/Checkout-PHP-SDK
-     *
-     * @return PayPalPaymentSystem
-     */
-    private function initPayPalSystem(): PayPalPaymentSystem
-    {
-        // Creating an environment
-        $clientId = "<<PAYPAL-CLIENT-ID>>";
-        $clientSecret = "<<PAYPAL-CLIENT-SECRET>>";
-
-        $environment = new SandboxEnvironment($clientId, $clientSecret);
-        $client = new PayPalHttpClient($environment);
-
-        return new PayPalPaymentSystem($client);
-    }
-
-    /**
-     * Initialize LiqPay.
-     * https://www.liqpay.ua/documentation/en/api/aquiring/checkout/doc
-     *
-     * @return LiqPayPaymentSystem
-     */
-    private function initLiqPaySystem(): LiqPayPaymentSystem
-    {
-        // Creating an environment
-        $publicKey = "<<LIQPAY-PUBLIC-KEY>>";
-        $privateKey = "<<LIQPAY-PRIVATE-KEY>>";
-
-        $liqpay = new LiqPay($publicKey, $privateKey);
-
-        return new LiqPayPaymentSystem($liqpay);
     }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Services\Payment;
 
+use App\Interfaces\PaymentSystemInterface;
 use App\Models\Order;
 use PayPalCheckoutSdk\Core\PayPalHttpClient;
 use PayPalCheckoutSdk\Orders\OrdersCreateRequest;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class PayPalPaymentSystem implements PaymentSystem
+class PayPalPaymentSystem implements PaymentSystemInterface
 {
     /**
      * For chose payment system type
@@ -16,9 +17,7 @@ class PayPalPaymentSystem implements PaymentSystem
      */
     public function __construct(
         private PayPalHttpClient $client
-    ) {
-        // ...
-    }
+    ) {}
 
     /**
      * From example https://github.com/paypal/Checkout-PHP-SDK#creating-an-order
@@ -50,7 +49,8 @@ class PayPalPaymentSystem implements PaymentSystem
             // Call API with your client and get a response for your call
             $response = $this->client->execute($request);
 
-            // If call returns body in response, you can get the deserialized version from the result attribute of the response
+            // If call returns body in response, you can get the deserialized
+            // version from the result attribute of the response
             return $response;
         } catch (HttpException $ex) {
             echo $ex->statusCode;

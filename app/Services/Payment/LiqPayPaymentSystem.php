@@ -2,10 +2,11 @@
 
 namespace App\Services\Payment;
 
+use App\Interfaces\PaymentSystemInterface;
 use App\Models\Order;
 use LiqPay;
 
-class LiqPayPaymentSystem implements PaymentSystem
+class LiqPayPaymentSystem implements PaymentSystemInterface
 {
     /**
      * For chose payment system type
@@ -14,9 +15,7 @@ class LiqPayPaymentSystem implements PaymentSystem
      */
     public function __construct(
         private LiqPay $client
-    ) {
-        // ...
-    }
+    ) {}
 
     /**
      * From example https://www.liqpay.ua/documentation/en/api/aquiring/checkout/doc

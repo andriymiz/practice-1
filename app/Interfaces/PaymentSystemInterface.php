@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Payment;
+namespace App\Interfaces;
 
 use App\Models\Order;
 
-interface PaymentSystem
+interface PaymentSystemInterface
 {
     /**
      * @param Order $order
